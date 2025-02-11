@@ -40,6 +40,9 @@ from django.contrib.auth.decorators import login_required
 
 #     return render(request, "dashboard.html", {"content_permissions": content_permissions})
 
+def adm_view(request):
+    return render(request,'adm_dashboard.html')
+
 def dashboard(request):
     admins = Admin.objects.all()  # Load all admins
     return render(request, 'dashboard.html', {'admins': admins})

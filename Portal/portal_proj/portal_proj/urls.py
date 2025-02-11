@@ -32,5 +32,6 @@ urlpatterns = [
     path('colleges/add/', add_college, name='add_college'),
     path('add_employee/', add_employee, name='add_employee'),
     path('add_manager/', add_manager, name='add_manager'),
+    path('adm_dashboard/',adm_view, name='adm_dashboard'),
 
 ]
