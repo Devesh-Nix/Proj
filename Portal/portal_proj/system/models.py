@@ -36,40 +36,68 @@ class Admin(models.Model):
     admin_name = models.CharField(unique=True, max_length=50)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=100)
-    admin_id = models.CharField(max_length=50, unique=True) 
+    admin_id = models.CharField(max_length=50, unique=True, blank=True)
     phone = models.CharField(max_length=15, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if not self.admin_id:
+            self.admin_id = f"ADM{self.Sno:04d}"  # Example: ADM0001
+        super().save(*args, **kwargs)
+
 
 class Manager(models.Model):
     Sno = models.AutoField(primary_key=True)  # Automatically increments
     manager_name = models.CharField(unique=True, max_length=50)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=100)
-    manager_id = models.CharField(max_length=50, unique=True) 
+    manager_id = models.CharField(max_length=50, unique=True, blank=True)
     phone = models.CharField(max_length=15, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if not self.manager_id:
+            self.manager_id = f"MGR{self.Sno:04d}"  # Example: MGR0001
+        super().save(*args, **kwargs)
+
 
 class Employee(models.Model):
     Sno = models.AutoField(primary_key=True)  # Automatically increments
     employee_name = models.CharField(unique=True, max_length=50)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=100)
-    employee_id = models.CharField(max_length=50, unique=True) 
+    employee_id = models.CharField(max_length=50, unique=True, blank=True)
     phone = models.CharField(max_length=15, blank=True, null=True)
 
-class useer(models.Model):
+    def save(self, *args, **kwargs):
+        if not self.employee_id:
+            self.employee_id = f"EMP{self.Sno:04d}"  # Example: EMP0001
+        super().save(*args, **kwargs)
+
+
+class User(models.Model):
     Sno = models.AutoField(primary_key=True)  # Automatically increments
     user_name = models.CharField(unique=True, max_length=50)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=100)
-    user_id = models.CharField(max_length=50, unique=True) 
+    user_id = models.CharField(max_length=50, unique=True, blank=True)
     phone = models.CharField(max_length=15, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if not self.user_id:
+            self.user_id = f"USR{self.Sno:04d}"  # Example: USR0001
+        super().save(*args, **kwargs)
 
 class Student(models.Model):
     Sno = models.AutoField(primary_key=True)  # Automatically increments
     student_name = models.CharField(unique=True, max_length=50)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=100)
-    student_id = models.CharField(max_length=50, unique=True) 
+    student_id = models.CharField(max_length=50, unique=True, blank=True) 
     registration_date = models.CharField(max_length=15, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if not self.student_id:
+            self.student_id = f"STU{self.Sno:04d}"  # Example: USR0001
+        super().save(*args, **kwargs)
 
 class College(models.Model):
     Sno = models.AutoField(primary_key=True)  # Automatically increments
@@ -78,12 +106,3 @@ class College(models.Model):
     contact = models.CharField(max_length=15, blank=True, null=True)
     college_id = models.CharField(max_length=50, unique=True) 
 
-
-# class Question(models.Model):
-#     question_text = models.CharField(max_length=255)
-#     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-
-# class Sale(models.Model):
-#     sale_amount = models.DecimalField(max_digits=10, decimal_places=2)
-#     sale_date = models.DateField()
-#     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

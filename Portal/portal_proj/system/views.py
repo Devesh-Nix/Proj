@@ -7,45 +7,32 @@ from auth_system.dashboard_content import get_dashboard_content
 from .models import *
 from django.contrib.auth.decorators import login_required
 
-# @login_required
-# def dashboard_view(request):
-#     # Dummy data for sales metrics
-#     sales_data = {
-#         "active_users": 100,  
-#         "premium_users": 50,  
-#         "total_users": 500,  
-#         "total_employees": 30,  
-#         "total_superadmins": 5,  
-#         "total_admins": 10,  
-#         "total_managers": 20,  
-#         "total_sale": "10L",  
-#         "yearly_sale": "10.2k",  
-#         "monthly_sale": "4.2k",  
-#         "weekly_sale": "80L",  
-#         "daily_sale": "10L",  
-#     }
-
-#     return render(request, 'dashboard.html', sales_data)
-
-# @login_required
-# def manage_admin_view(request):
-#     admins = Admin.objects.all()
-#     print(admins)
-#     return render(request, 'dashboard.html', {"admins": admins})
-
-
-# def dashboard_view(request):
-#     user_role = request.user.role  # Assuming role is stored in user model
-#     content_permissions = get_dashboard_content(user_role)
-
-#     return render(request, "dashboard.html", {"content_permissions": content_permissions})
 def adm_view(request):
-    return render(request,'adm_dashboard.html')
+    admins = Admin.objects.all()  # Fetch all admins for better data handling (optional)
+    
+    context = {
+        "admins": admins,
+    }
+
+    return render(request, 'adm_dashboard.html', context)
 
 
 def dashboard(request): 
     admins = Admin.objects.all()  # Load all admins
-    return render(request, 'dashboard.html', {'admins': admins})
+    employees = Employee.objects.all()  # Fetch all employees
+    users = User.objects.all()  # Fetch all users
+    students = Student.objects.all()  # Fetch all students
+    colleges = College.objects.all()  # Fetch all colleges
+
+    context = {
+        
+        "employees": employees,
+        "admins": admins,
+        "users": users,
+        "students": students,
+        "colleges": colleges,
+    }
+    return render(request, 'dashboard.html', context)
 
 def add_admin(request):
     if request.method == "POST":
@@ -75,11 +62,11 @@ def add_user(request):
         phone = request.POST.get("phone")
 
         # Generate next Sno
-        last_user = useer.objects.order_by('-Sno').first()  # Get latest record
+        last_user = User.objects.order_by('-Sno').first()  # Get latest record
         next_sno = str(int(last_user.Sno) + 1) if last_user and last_user.Sno else "1"
 
         # Save to database
-        useer.objects.create(
+        User.objects.create(
             Sno=next_sno, 
             user_name=user_name, 
             email=email, 
@@ -182,7 +169,7 @@ def emp_dashboard(request):
         if 'update_user' in request.POST:
             user_id = request.POST.get("user_id")
             try:
-                user = useer.objects.get(user_id=user_id)
+                user = User.objects.get(user_id=user_id)
                 user.user_name = request.POST.get("user_name", user.user_name)
                 user.email = request.POST.get("email", user.email)
                 user.phone = request.POST.get("phone", user.phone)
@@ -190,18 +177,18 @@ def emp_dashboard(request):
                 if new_password:
                     user.password = new_password
                 user.save()
-            except useer.DoesNotExist:
+            except User.DoesNotExist:
                 pass
             return redirect('emp_dashboard')
         if 'delete_user' in request.POST:
             user_id = request.POST.get("user_id")
             try:
-                user = useer.objects.get(user_id=user_id)
+                user = User.objects.get(user_id=user_id)
                 user.delete()
-            except useer.DoesNotExist:
+            except User.DoesNotExist:
                 pass
             return redirect('emp_dashboard')
-    users = useer.objects.all()
+    users = User.objects.all()
     students = Student.objects.all()
     colleges = College.objects.all()
     employees = Employee.objects.all()
@@ -217,7 +204,7 @@ def manager_view(request):
     
     employees = Employee.objects.all()  # Fetch all employees
     admins = Admin.objects.all()  # Fetch all admins
-    users = useer.objects.all()  # Fetch all users
+    users = User.objects.all()  # Fetch all users
     students = Student.objects.all()  # Fetch all students
     colleges = College.objects.all()  # Fetch all colleges
 
@@ -231,3 +218,5 @@ def manager_view(request):
     }
 
     return render(request, "manager_dashboard.html", context)
+
+

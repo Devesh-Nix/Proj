@@ -30,7 +30,7 @@ class EmployeeAdmin(admin.ModelAdmin):
     list_display = ('Sno', 'employee_name', 'email', 'employee_id', 'phone')
     search_fields = ('employee_name__username', 'email', 'employee_id')
 
-@admin.register(useer)
+@admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     list_display = ('Sno', 'user_name', 'email', 'user_id', 'phone')
     search_fields = ('user_name__username', 'email', 'user_id')
