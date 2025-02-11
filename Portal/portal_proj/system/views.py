@@ -40,7 +40,7 @@ from django.contrib.auth.decorators import login_required
 
 #     return render(request, "dashboard.html", {"content_permissions": content_permissions})
 
-def dashboard(request):
+def dashboard(request): 
     admins = Admin.objects.all()  # Load all admins
     return render(request, 'dashboard.html', {'admins': admins})
 
@@ -173,3 +173,39 @@ def add_manager(request):
         return redirect('dashboard')  # Redirect to dashboard
 
     return redirect('dashboard')  # Fallback redirect
+
+def emp_dashboard(request):
+    if request.method == "POST":
+        if 'update_user' in request.POST:
+            user_id = request.POST.get("user_id")
+            try:
+                user = useer.objects.get(user_id=user_id)
+                user.user_name = request.POST.get("user_name", user.user_name)
+                user.email = request.POST.get("email", user.email)
+                user.phone = request.POST.get("phone", user.phone)
+                new_password = request.POST.get("password")
+                if new_password:
+                    user.password = new_password
+                user.save()
+            except useer.DoesNotExist:
+                pass
+            return redirect('emp_dashboard')
+        if 'delete_user' in request.POST:
+            user_id = request.POST.get("user_id")
+            try:
+                user = useer.objects.get(user_id=user_id)
+                user.delete()
+            except useer.DoesNotExist:
+                pass
+            return redirect('emp_dashboard')
+    users = useer.objects.all()
+    students = Student.objects.all()
+    colleges = College.objects.all()
+    employees = Employee.objects.all()
+    context = {
+        'employees': employees,
+        'users': users,
+        'students': students,
+        'colleges': colleges,
+    }
+    return render(request, 'emp_dashboard.html', context)
