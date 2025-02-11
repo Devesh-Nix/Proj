@@ -33,6 +33,6 @@ urlpatterns = [
     path('add_employee/', add_employee, name='add_employee'),
     path('add_manager/', add_manager, name='add_manager'),
     path('adm_dashboard/',adm_view, name='adm_dashboard'),
-    path('emp_dashboard/', emp_dashboard, name="emp_dashboard")
-
+    path('emp_dashboard/', emp_dashboard, name="emp_dashboard"),
+    path("mgr_dashboard/", manager_view, name="manager_dashboard"),
 ]

@@ -39,15 +39,11 @@ from django.contrib.auth.decorators import login_required
 #     content_permissions = get_dashboard_content(user_role)
 
 #     return render(request, "dashboard.html", {"content_permissions": content_permissions})
-
-<<<<<<< HEAD
 def adm_view(request):
     return render(request,'adm_dashboard.html')
 
-def dashboard(request):
-=======
+
 def dashboard(request): 
->>>>>>> 776788105feb240cba2e912db942aad28c33e4b8
     admins = Admin.objects.all()  # Load all admins
     return render(request, 'dashboard.html', {'admins': admins})
 
@@ -216,3 +212,22 @@ def emp_dashboard(request):
         'colleges': colleges,
     }
     return render(request, 'emp_dashboard.html', context)
+
+def manager_view(request):
+    
+    employees = Employee.objects.all()  # Fetch all employees
+    admins = Admin.objects.all()  # Fetch all admins
+    users = useer.objects.all()  # Fetch all users
+    students = Student.objects.all()  # Fetch all students
+    colleges = College.objects.all()  # Fetch all colleges
+
+    context = {
+        
+        "employees": employees,
+        "admins": admins,
+        "users": users,
+        "students": students,
+        "colleges": colleges,
+    }
+
+    return render(request, "manager_dashboard.html", context)
