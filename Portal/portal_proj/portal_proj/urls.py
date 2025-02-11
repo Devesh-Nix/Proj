@@ -32,10 +32,7 @@ urlpatterns = [
     path('colleges/add/', add_college, name='add_college'),
     path('add_employee/', add_employee, name='add_employee'),
     path('add_manager/', add_manager, name='add_manager'),
-<<<<<<< HEAD
     path('adm_dashboard/',adm_view, name='adm_dashboard'),
-=======
     path('emp_dashboard/', emp_dashboard, name="emp_dashboard")
->>>>>>> 776788105feb240cba2e912db942aad28c33e4b8
 
 ]
